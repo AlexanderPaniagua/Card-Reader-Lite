@@ -1,0 +1,9 @@
+{
+  "platforms": ["apple", "android", "web"],
+  "apple": {
+    "modules": ["CardReaderLiteModule"]
+  },
+  "android": {
+    "modules": ["com.calpanditechnologies.modules.cardreaderlite.CardReaderLiteModule"]
+  }
+}
