@@ -52,9 +52,10 @@ npx pod-install
 
 1. iOS Setup: Before building, make sure your app requests camera permissions in Info.plist
 
-```xml
+```
 <key>NSCameraUsageDescription</key>
 <string>Card Reader Lite requires camera access to scan your card.</string>
+```
 
 2. Import the module: Import the scanCard function from the package
 
@@ -99,7 +100,6 @@ export default function App() {
   "brand": "MASTER_CARD"
 }
 ```
-
 
 ---
 
