@@ -39,5 +39,14 @@
     "expo": "*",
     "react": "*",
     "react-native": "*"
-  }
+  },
+  "files": [
+  "build",
+  "ios",
+  "android",
+  "expo-module.config.json",
+  "CardReaderLite.podspec",
+  "plugin.js",
+  "src"
+]
 }
