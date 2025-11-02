@@ -1,35 +1,41 @@
-# card-reader-lite
+# 📸 Card Reader Lite
 
-A custom expo module to read credit card data
+> **A lightweight Expo module for credit card scanning on iOS**  
+> Built with Swift + Vision, inspired by [michzio/CardScanner](https://github.com/michzio/CardScanner)
 
-# API documentation
+---
 
-- [Documentation for the latest stable release](https://docs.expo.dev/versions/latest/sdk/card-reader-lite/)
-- [Documentation for the main branch](https://docs.expo.dev/versions/unversioned/sdk/card-reader-lite/)
+## ⚙️ Overview
 
-# Installation in managed Expo projects
+**Card Reader Lite** is an iOS-only Expo module that allows React Native / Expo apps to scan credit or debit cards using the device camera.  
+It leverages **Apple’s Vision framework** for OCR-based number detection and returns structured card information.
 
-For [managed](https://docs.expo.dev/archive/managed-vs-bare/) Expo projects, please follow the installation instructions in the [API documentation for the latest stable release](#api-documentation). If you follow the link and there is no documentation available then this library is not yet usable within managed projects &mdash; it is likely to be included in an upcoming Expo SDK release.
+---
 
-# Installation in bare React Native projects
+## 🧩 Features
 
-For bare React Native projects, you must ensure that you have [installed and configured the `expo` package](https://docs.expo.dev/bare/installing-expo-modules/) before continuing.
+- 🧠 **Native iOS Vision-based OCR** for card number recognition  
+- 📱 Presents a native Swift camera view controller  
+- 🧩 Designed as an **Expo Module** (no React Native bridge boilerplate)  
+- 🚀 Lightweight – no external dependencies  
+- 🔒 Privacy-respecting – no data sent externally  
 
-### Add the package to your npm dependencies
+---
 
-```
+## 📱 Platform Support
+
+| Platform | Supported |
+|-----------|------------|
+| iOS       | ✅ Yes (15.1+) |
+| Android   | ❌ Not yet supported |
+| Web       | ❌ Not applicable |
+
+> ℹ️ This module is designed **only for iOS** at the moment.
+
+---
+
+## 📦 Installation
+
+```bash
 npm install card-reader-lite
-```
-
-### Configure for Android
-
-
-
-
-### Configure for iOS
-
-Run `npx pod-install` after installing the npm package.
-
-# Contributing
-
-Contributions are very welcome! Please refer to guidelines described in the [contributing guide]( https://github.com/expo/expo#contributing).
+npx pod-install

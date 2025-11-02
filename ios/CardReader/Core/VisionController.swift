@@ -1,3 +1,10 @@
+//
+//  VisionController.swift
+//  CardReaderLite
+//
+//  Created by Alexander Paniagua on 1/11/25.
+//
+
 import UIKit
 import AVFoundation
 import Vision
@@ -22,15 +29,15 @@ public class VisionController: UIViewController {
     var videoStabilizationMode: AVCaptureVideoStabilizationMode {
         .standard
     }
-
+    
     /*
-    lazy var imageView : UIImageView = {
-        let imageView = UIImageView()
-        imageView.contentMode = .redraw //.scaleAspectFill
-        imageView.translatesAutoresizingMaskIntoConstraints = false
-        return imageView
-    }()
-    */
+     lazy var imageView : UIImageView = {
+     let imageView = UIImageView()
+     imageView.contentMode = .redraw //.scaleAspectFill
+     imageView.translatesAutoresizingMaskIntoConstraints = false
+     return imageView
+     }()
+     */
     
     lazy var previewView: PreviewView = {
         let previewView = PreviewView()
@@ -82,21 +89,21 @@ public class VisionController: UIViewController {
     // MARK: - Helper Properties
     var cameraBrightness: Double = 1.0
     var cameraImageBuffer: CVImageBuffer?
-
+    
     init(configuration: CardScanner.Configuration) {
         self.configuration = configuration
-
+        
         super.init(nibName: nil, bundle: nil)
     }
-
+    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-
+    
     @objc func torchAction() {
         toggleTorch(on: !torchButton.isSelected)
     }
-
+    
     // MARK: - Life Cycle
     public override func viewDidLoad() {
         super.viewDidLoad()
@@ -124,16 +131,16 @@ public class VisionController: UIViewController {
     }
     
     /*
-    override func viewDidLayoutSubviews() {
-        imageView.layer.sublayers?.first?.frame = imageView.bounds
-    }*/
+     override func viewDidLayoutSubviews() {
+     imageView.layer.sublayers?.first?.frame = imageView.bounds
+     }*/
     
     // MARK: - Device Orientation Handling
     public override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
         
         print("[Vision Controller] Orientation did change")
-
+        
         overlayView.isHidden = true
         DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(500)) { [weak self] in
             self?.setupOrientation()
@@ -188,12 +195,12 @@ public class VisionController: UIViewController {
     }
     
     /*
-    private func addAnnotationLayer() {
-        
-        annotationLayer.bounds = imageView.layer.frame
-        annotationLayer.opacity = 0.0
-        imageView.layer.addSublayer(annotationLayer)
-    }*/
+     private func addAnnotationLayer() {
+     
+     annotationLayer.bounds = imageView.layer.frame
+     annotationLayer.opacity = 0.0
+     imageView.layer.addSublayer(annotationLayer)
+     }*/
 }
 
 // MARK: - AVFoundation
@@ -217,7 +224,7 @@ extension VisionController {
             }
         }
     }
-     
+    
     private func setupCaptureSession() {
         // remove previous inputs & outputs
         if let inputs = session.inputs as? [AVCaptureDeviceInput] {
@@ -297,16 +304,16 @@ extension VisionController {
     }
     
     private func configCaptureDeviceInput() {
-         guard
+        guard
             let device,
             let input = try? AVCaptureDeviceInput(device: device)
         else {
-             print("Could not create device input.")
-             return
-         }
-         if session.canAddInput(input) {
-             session.addInput(input)
-         }
+            print("Could not create device input.")
+            return
+        }
+        if session.canAddInput(input) {
+            session.addInput(input)
+        }
     }
     
     private func configVideoDataOutput() {
@@ -352,7 +359,7 @@ extension VisionController {
 extension VisionController {
     
     private func setupTextRectanglesDetection() {
-
+        
         let request = VNDetectTextRectanglesRequest(completionHandler: { [weak self] request, error in
             self?.textDetectionHandler(request: request, error: error)
         })
@@ -378,8 +385,8 @@ extension VisionController {
         }
         
         /* NOT SO EASY! -> USE VNRecognizeTextRequest
-        detectWords(of: observations)
-        */
+         detectWords(of: observations)
+         */
     }
     
     func detectWords(of observations: [VNTextObservation]) {
@@ -439,14 +446,14 @@ extension VisionController {
                 print("[Text recognition] ", recognizedText.string)
                 
                 /*
-                let range = recognizedText.string.startIndex..<recognizedText.string.endIndex
-                if let observation = try? recognizedText.boundingBox(for: range) {
-                    DispatchQueue.main.async {
-                        self.highlightBox(observation.boundingBox, color: UIColor.green)
-                    }
-                }*/
+                 let range = recognizedText.string.startIndex..<recognizedText.string.endIndex
+                 if let observation = try? recognizedText.boundingBox(for: range) {
+                 DispatchQueue.main.async {
+                 self.highlightBox(observation.boundingBox, color: UIColor.green)
+                 }
+                 }*/
             }
-
+            
             DispatchQueue.main.async { [weak self] in
                 self?.highlightBox(observation.boundingBox, color: UIColor.white)
             }
@@ -512,7 +519,7 @@ extension VisionController {
     
     func highlightBox(_ box: CGRect, color: UIColor, lineWidth: CGFloat = 1.0, isTemporary: Bool = true) {
         guard configuration.drawBoxes else { return }
-
+        
         func transform(_ box: CGRect) -> CGRect {
             let size = previewView.frame.size
             let roi = overlayView.regionOfInterest
@@ -524,14 +531,14 @@ extension VisionController {
                 .scaledBy(x: 1, y: -1)
                 .translatedBy(x: roiX / 2, y: -roiY - size.height / 3.5)
                 .scaledBy(x: roiWidth, y: roiHeight)
-
-
+            
+            
             let transformedBox = box.applying(transform)
             print("Box vs TransformedBox: ", box, transformedBox, size)
-
+            
             return transformedBox
         }
-
+        
         func draw(_ box: CGRect) {
             let outline = CALayer()
             outline.frame = box
@@ -558,7 +565,7 @@ extension VisionController: AVCaptureVideoDataOutputSampleBufferDelegate {
         guard let pixelBuffer = CMSampleBufferGetImageBuffer(sampleBuffer) else { return }
         cameraBrightness = getBrightness(sampleBuffer: sampleBuffer)
         cameraImageBuffer = pixelBuffer
-    
+        
         var requestOptions: [VNImageOption : Any] = [:]
         
         if let camData = CMGetAttachment(sampleBuffer, key: kCMSampleBufferAttachmentKey_CameraIntrinsicMatrix, attachmentModeOut: nil) {
@@ -566,7 +573,7 @@ extension VisionController: AVCaptureVideoDataOutputSampleBufferDelegate {
         }
         
         print("Text orientation: \(overlayView.textOrientation.rawValue)")
-       
+        
         let imageRequestHandler = VNImageRequestHandler(
             cvPixelBuffer: pixelBuffer,
             orientation: overlayView.textOrientation,
@@ -620,7 +627,7 @@ extension VisionController {
             let device = AVCaptureDevice.default(for: AVMediaType.video),
             device.hasTorch
         else { return }
-
+        
         do {
             try device.lockForConfiguration()
             device.torchMode = on ? .on : .off

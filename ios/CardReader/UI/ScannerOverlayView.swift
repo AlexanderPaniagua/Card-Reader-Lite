@@ -1,3 +1,10 @@
+//
+//  ScannerOverlayView.swift
+//  CardReaderLite
+//
+//  Created by Alexander Paniagua on 1/11/25.
+//
+
 import UIKit
 import AVFoundation
 
@@ -8,7 +15,7 @@ class ScannerOverlayView: UIView {
     // MARK: - Init
     required init(configuration: CardScanner.Configuration) {
         self.configuration = configuration
-
+        
         super.init(frame: .zero)
         setup()
     }
@@ -70,7 +77,7 @@ class ScannerOverlayView: UIView {
 extension ScannerOverlayView {
     
     func updateRegionOfInterest() {
-    
+        
         // calculate new ROI
         calculateRegionOfInterest()
         
@@ -198,7 +205,7 @@ extension ScannerOverlayView {
     }
     
     func addWatermark() {
-
+        
         let watermark = CATextLayer()
         watermark.string = configuration.watermarkText
         watermark.foregroundColor = configuration.accentColor.cgColor

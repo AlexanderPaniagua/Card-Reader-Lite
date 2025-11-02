@@ -22,8 +22,8 @@ Pod::Spec.new do |s|
     'SWIFT_OPTIMIZATION_LEVEL' => '-Onone'
   }
 
-  # ✅ Fixed source paths (relative to ios/)
   s.source_files = [
-    'ios/CardReader/**/*.{swift,h,m,mm}'
+    'CardReader/**/*.{swift,h,m,mm}',
+    'CardReaderLiteModule.swift'
   ]
 end

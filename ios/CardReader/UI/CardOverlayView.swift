@@ -1,5 +1,13 @@
+//
+//  CardOverlayView.swift
+//  CardReaderLite
+//
+//  Created by Alexander Paniagua on 1/11/25.
+//
+
 import UIKit
 import AVFoundation
+
 class CardOverlayView: ScannerOverlayView {
     
     override var desiredHeightRatio: Double { 0.5 }

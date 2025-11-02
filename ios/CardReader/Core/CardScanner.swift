@@ -1,9 +1,16 @@
+//
+//  CardScanner.swift
+//  CardReaderLite
+//
+//  Created by Alexander Paniagua on 1/11/25.
+//
+
 import SwiftUI
 
 public typealias CardScannerHandler = (_ number: String?, _ expDate: String?, _ holder: String?) -> Void
 
 public struct CardScanner: UIViewControllerRepresentable {
-
+    
     public struct Configuration {
         let watermarkText: String
         let font: UIFont
@@ -13,7 +20,7 @@ public struct CardScanner: UIViewControllerRepresentable {
         let drawBoxes: Bool
         let localizedCancelButton: String
         let localizedDoneButton: String
-
+        
         public init(
             watermarkText: String,
             font: UIFont,
@@ -33,7 +40,7 @@ public struct CardScanner: UIViewControllerRepresentable {
             self.localizedCancelButton = localizedCancelButton
             self.localizedDoneButton = localizedDoneButton
         }
-
+        
         public static let `default` = Configuration(
             watermarkText: "Card_Scanner",
             font: .systemFont(ofSize: 24),
@@ -71,7 +78,7 @@ public struct CardScanner: UIViewControllerRepresentable {
     public func makeCoordinator() -> Coordinator {
         Coordinator(self)
     }
-   
+    
     public func makeUIViewController(context: Context) -> CardScannerController {
         let scanner = CardScannerController(configuration: configuration)
         scanner.firstNameSuggestion = firstNameSuggestion
@@ -83,7 +90,7 @@ public struct CardScanner: UIViewControllerRepresentable {
     public func updateUIViewController(_ uiViewController: CardScannerController, context: Context) { }
     
     public class Coordinator: NSObject, CardScannerDelegate {
-
+        
         private let parent: CardScanner
         
         init(_ parent: CardScanner) {
@@ -94,12 +101,12 @@ public struct CardScanner: UIViewControllerRepresentable {
             parent.presentationMode.wrappedValue.dismiss()
         }
         
-        func didTapDone(number: String?, expDate: String?, holder: String?) {
+        func didTapDone(number: String?, expDate: String?, holder: String?, brand: String?) {
             parent.presentationMode.wrappedValue.dismiss()
             parent.onCardScanned(number, expDate, holder)
         }
         
-        func didScanCard(number: String?, expDate: String?, holder: String?) { }
+        func didScanCard(number: String?, expDate: String?, holder: String?, brand: String?) { }
     }
 }
 

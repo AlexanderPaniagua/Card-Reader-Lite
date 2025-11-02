@@ -1,3 +1,10 @@
+//
+//  CardScannerHostingController.swift
+//  CardReaderLite
+//
+//  Created by Alexander Paniagua on 1/11/25.
+//
+
 import UIKit
 
 class CardScannerHostingController: UIViewController, CardScannerDelegate {
@@ -34,17 +41,18 @@ class CardScannerHostingController: UIViewController, CardScannerDelegate {
         }
     }
     
-    func didTapDone(number: String?, expDate: String?, holder: String?) {
+    func didTapDone(number: String?, expDate: String?, holder: String?, brand: String?) {
         dismiss(animated: true) {
             self.completion?([
                 "number": number ?? "",
                 "expDate": expDate ?? "",
-                "holder": holder ?? ""
+                "holder": holder ?? "",
+                "brand": brand ?? "",
             ])
         }
     }
     
-    func didScanCard(number: String?, expDate: String?, holder: String?) {
+    func didScanCard(number: String?, expDate: String?, holder: String?, brand: String?) {
         print("🔍 Intermediate scan:", number ?? "nil")
     }
 }

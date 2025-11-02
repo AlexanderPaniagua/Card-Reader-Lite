@@ -1,3 +1,10 @@
+//
+//  AnnotationLayer.swift
+//  CardReaderLite
+//
+//  Created by Alexander Paniagua on 1/11/25.
+//
+
 import UIKit
 import QuartzCore
 

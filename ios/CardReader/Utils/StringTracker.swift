@@ -1,3 +1,10 @@
+//
+//  StringTracker.swift
+//  CardReaderLite
+//
+//  Created by Alexander Paniagua on 1/11/25.
+//
+
 import UIKit
 
 typealias StringRecognition = (text: String, rect: CGRect?)
@@ -7,7 +14,7 @@ class StringTracker {
     private static let Threshold = 3
     
     var frameIndex: Int64 = 0
-
+    
     typealias StringObservation = (lastSeen: Int64, count: Int64, box: CGRect?)
     
     // Dictionary of seen strings. Used to get stable recognition before
@@ -28,7 +35,7 @@ class StringTracker {
     func logFrame(recognition: StringRecognition) {
         logFrame(recognitions: [recognition])
     }
-
+    
     func logFrame(recognitions: [StringRecognition]) {
         
         for recognition in recognitions {
@@ -42,9 +49,9 @@ class StringTracker {
             seenStrings[recognition.text]?.box = recognition.rect
             print("Seen \(recognition.text) \(seenStrings[recognition.text]?.count ?? 0) times")
         }
-    
+        
         var obsoleteStrings = [String]()
-
+        
         // Go through strings and prune any that have not been seen in while.
         // Also find the (non-pruned) string with the greatest count.
         for (string, obs) in seenStrings {

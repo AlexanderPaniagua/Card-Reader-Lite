@@ -1,3 +1,10 @@
+//
+//  CardGroup.swift
+//  CardReaderLite
+//
+//  Created by Alexander Paniagua on 1/11/25.
+//
+
 import SwiftUI
 
 public enum CardGroup: String, Decodable {
@@ -30,9 +37,9 @@ public enum CardGroup: String, Decodable {
     case visaAlphaBankBonus
     case visaDankort
     case warehouse
-
+    
     case other = "OTHER"
-
+    
     public var isBCMCCard: Bool {
         self == .bcmc || self == .bancontact
     }

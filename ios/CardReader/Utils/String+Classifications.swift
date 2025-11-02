@@ -1,3 +1,10 @@
+//
+//  String+Classifications.swift
+//  CardReaderLite
+//
+//  Created by Alexander Paniagua on 1/11/25.
+//
+
 import Foundation
 import NaturalLanguage
 
@@ -27,7 +34,7 @@ extension String {
         }
         
         let potentialNumber = String(self[range])
-
+        
         let cardValidator = CardValidator()
         guard
             cardValidator.validationType(from: potentialNumber) != nil,
@@ -209,7 +216,7 @@ extension String {
         text = text.replacingOccurrences(of: "  ", with: " ")
         
         let range = NSRange(location: 0, length: text.utf16.count)
-    
+        
         let tagger = NSLinguisticTagger(tagSchemes: [.nameType], options: 0)
         tagger.string = text
         tagger.setOrthography(NSOrthography.defaultOrthography(forLanguage: "en-US"), range: range)
@@ -220,15 +227,15 @@ extension String {
         var personalNames = [String]()
         
         /*
-        // this is asynchronous, we prefere to retrieve classification tags synchronously
-        tagger.enumerateTags(in: range, unit: .word, scheme: .nameType, options: options) { (tag, tokenRange, stop) in
-            if let tag = tag, tags.contains(tag) {
-                if let range = Range(tokenRange, in: text) {
-                    let name = text[range]
-                    print("Name: \(name): \(tag)")
-                }
-            }
-        }*/
+         // this is asynchronous, we prefere to retrieve classification tags synchronously
+         tagger.enumerateTags(in: range, unit: .word, scheme: .nameType, options: options) { (tag, tokenRange, stop) in
+         if let tag = tag, tags.contains(tag) {
+         if let range = Range(tokenRange, in: text) {
+         let name = text[range]
+         print("Name: \(name): \(tag)")
+         }
+         }
+         }*/
         
         var tokenRanges: NSArray?
         let foundTags = tagger.tags(in: range, unit: .word, scheme: .nameType, options: options, tokenRanges: &tokenRanges)

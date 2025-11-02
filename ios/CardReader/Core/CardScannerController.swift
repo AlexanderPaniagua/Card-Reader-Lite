@@ -1,21 +1,42 @@
+//
+//  CardScannerController.swift
+//  CardReaderLite
+//
+//  Created by Alexander Paniagua on 1/11/25.
+//
+
 import UIKit
 import Vision
 import CoreHaptics
 
 protocol CardScannerDelegate: AnyObject {
-    
     func didTapCancel()
-    func didTapDone(number: String?, expDate: String?, holder: String?)
-    
-    func didScanCard(number: String?, expDate: String?, holder: String?)
+    func didTapDone(number: String?, expDate: String?, holder: String?, brand: String?)
+    func didScanCard(number: String?, expDate: String?, holder: String?, brand: String?)
 }
 
 public class CardScannerController : VisionController {
-    
-    // MARK: - Delegate
+    // MARK: - Delegates
     weak var delegate: CardScannerDelegate?
     
-    // MRAK: - Ovelay View
+    // MARK: - Variables
+    var observationsCount: Int = 0
+    
+    // You can hint here user first/last name
+    // To improve card holder detection
+    var firstNameSuggestion: String = ""
+    var lastNameSuggestion: String = ""
+    
+    let numberTracker = StringTracker()
+    let expDateTracker = StringTracker()
+    let fullNameTracker = StringTracker()
+    
+    var foundNumber : String?
+    var foundExpDate : String?
+    var foundCardHolder : String?
+    var foundBrand : String?
+    
+    // MARK: - Ovelay View
     override var overlayViewClass: ScannerOverlayView.Type {
         return CardOverlayView.self
     }
@@ -91,7 +112,7 @@ public class CardScannerController : VisionController {
             stopLiveStream()
             delegate?.didTapCancel()
         } else {
-            delegate?.didTapDone(number: foundNumber, expDate: foundExpDate, holder: foundCardHolder)
+            delegate?.didTapDone(number: foundNumber, expDate: foundExpDate, holder: foundCardHolder, brand: foundBrand)
         }
     }
     
@@ -122,19 +143,6 @@ public class CardScannerController : VisionController {
     override var recognitionLevel: VNRequestTextRecognitionLevel {
         return .accurate
     }
-    
-    // You can hint here user first/last name
-    // To improve card holder detection
-    var firstNameSuggestion: String = ""
-    var lastNameSuggestion: String = ""
-    
-    let numberTracker = StringTracker()
-    let expDateTracker = StringTracker()
-    let fullNameTracker = StringTracker()
-    
-    var foundNumber : String?
-    var foundExpDate : String?
-    var foundCardHolder : String?
     
     public override func observationsHandler(observations: [VNRecognizedTextObservation] ) {
         
@@ -191,6 +199,8 @@ public class CardScannerController : VisionController {
             
             let cardType = CardValidator().validationType(from: sureNumber)
             let brand = cardType?.group.rawValue ?? ""
+            
+            foundBrand = brand
             showString(string: brand, in: brandLabel)
             
             if let box = numberTracker.getStableBox() {
@@ -254,9 +264,6 @@ public class CardScannerController : VisionController {
         }
     }
     
-    // MARK: - Scanner Stop
-    var observationsCount: Int = 0
-    
     private func shouldStopScanner() {
         
         if foundNumber != nil && ((foundExpDate != nil && foundCardHolder != nil) || (observationsCount > 50) ) {
@@ -270,7 +277,8 @@ public class CardScannerController : VisionController {
                 strongSelf.delegate?.didScanCard(
                     number: strongSelf.foundNumber,
                     expDate: strongSelf.foundExpDate,
-                    holder: strongSelf.foundCardHolder
+                    holder: strongSelf.foundCardHolder,
+                    brand: strongSelf.foundBrand
                 )
             }
         }

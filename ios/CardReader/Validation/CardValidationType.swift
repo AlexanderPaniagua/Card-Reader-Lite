@@ -1,9 +1,16 @@
+//
+//  CardValidationType.swift
+//  CardReaderLite
+//
+//  Created by Alexander Paniagua on 1/11/25.
+//
+
 import Foundation
 
 public struct CardValidationType {
     public let group: CardGroup
     public let regex: String
-
+    
     public init(group: CardGroup, regex: String) {
         self.group = group
         self.regex = regex
