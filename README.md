@@ -39,13 +39,14 @@ It leverages **Apple’s Vision framework** for OCR-based number detection and r
 ```bash
 npm install card-reader-lite
 npx pod-install
+```
 
 If you use Yarn:
 
 ```bash
 yarn add card-reader-lite
 npx pod-install
-
+```
 ---
 
 ## 🪄 How to Use
